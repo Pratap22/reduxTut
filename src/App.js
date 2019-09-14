@@ -1,26 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
 import './App.css';
+import { incrementCount, decrementCount, passData } from './store/action';
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {props.count}
+      <button onClick={props.increment}>Increment</button>
+      <button onClick={props.decrement}>Decrement</button>
+      {props.data}
+      <button onClick={props.passData}>Pass my Name</button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  // using the global state to the current component
+  count: state.count,
+  data: state.data
+});
+
+const mapDispatchToProps = dispatch => ({
+  // dispatching an action
+  increment: () => dispatch(incrementCount()),
+  decrement: () => dispatch(decrementCount()),
+  passData: () => dispatch(passData())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+// Functionnal -> use whenever you dont need any state -> useEffect
+// class component -> when ever you need state -> different lifecycle method.
+
+// React is different && Redux is different
+// react-redux -> This is the connection between react and redux.
+
+// TO implement redux
+// 1. store
+// 2. reducers
+// 3. actions
+
+// Redux Thunk -> dispatching asyncrounous actions.
